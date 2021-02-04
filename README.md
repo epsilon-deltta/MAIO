@@ -1,5 +1,6 @@
-## make your marketing analysis automatic
+## Make your marketing analysis be automatic
 
+![](./img/crowd)
 - auto keywords generation
 - auto inserting to Naver data lab  
 
@@ -7,6 +8,7 @@
 
 ### Generating keywords of one keyword you entered  
 ### Inserting these automaticaly to NAVER DATA LAB !
+![](./img/datalab.png) ![](./img/naver-ads.jpg)  
 
 #### ETC
 
