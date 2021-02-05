@@ -3,7 +3,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-import time
+import time 
 import random
 import requests
 
@@ -38,9 +38,11 @@ def get_header(method, uri, api_key, secret_key, customer_id):
             'X-Customer': str(CUSTOMER_ID), 
             'X-Signature': signature
            }
-
+import os
 def keywords_graph(kwd):
 
+    if not os.path.exists('./data'):
+        os.mkdir('data')
     ## naver ads keywords
 
     BASE_URL = 'https://api.naver.com'
@@ -129,6 +131,7 @@ class keywordTrend :
     def __init__(self,kwd):
         self.kwd = kwd
         self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd )  )
+        # self.keycoords
 
     ## naver ads keywords
     def ads_kwds(self,kwd):

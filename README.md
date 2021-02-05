@@ -1,3 +1,6 @@
+[Youtube Video About simple usage ](https://youtu.be/_kPnSxVV7z0)
+
+
 ## Make your marketing analysis be automatic
 
 ![](./img/crowd.png)
