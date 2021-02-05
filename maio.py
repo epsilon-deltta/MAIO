@@ -85,7 +85,7 @@ def keywords_graph(kwd):
     for i in range(2):
         client_id = keydict['nav_client_id']
         client_secret = keydict['nav_client_secret']
-        url = "https://openapi.naver.com/v1/datalab/search";
+        url = "https://openapi.naver.com/v1/datalab/search"
         body = {
             'startDate': start,
             'endDate':  end,
@@ -121,6 +121,91 @@ def keywords_graph(kwd):
         plt.ylabel('Trend')
         fig.savefig('data/graph_%s%d.png'%(kwd,i))
 
+class keywordTrend :
+
+    def __init__(self,kwd):
+        self.kwd = kwd
+        self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd )  )
+
+    ## naver ads keywords
+    def ads_kwds(self,kwd):
+        BASE_URL = 'https://api.naver.com'
+
+        uri = '/keywordstool'
+        method = 'GET'
+        payload={
+                'hintKeywords':kwd,
+                'showDetail' :1
+                }
+
+        r = requests.get(BASE_URL + uri, params=payload, headers=get_header(method, uri, API_KEY, SECRET_KEY, CUSTOMER_ID))
+        keywords = r.json()['keywordList'][:100]
+        del r
+        return keywords
+
+    ## preprocessing of naver ads keywords
+    def preprcs_kwds(self,keywords):
+        keywords = pd.DataFrame(keywords)
+        keywords.columns = ['relkeyword','sch','mob_sch','click','mob_click','clk_r','mob_clk_r','num_ads','comp']
+
+        comp_dic={'높음':2,'중간':1,'낮음':0}
+
+        keywords.comp = keywords.comp.apply(lambda x : comp_dic[x])
+        keywords.sch = keywords.sch.astype('str').str.replace('< ','').astype('int')
+        keywords.mob_sch = keywords.mob_sch.astype('str').str.replace('< ','').astype('int')
+
+        return keywords
+
+    def get_keywords(self,num=10):
+        return self.tkwds[:num]
+        
+
+    from datetime import datetime
+    from dateutil.relativedelta import relativedelta as delta
+    def kwds_coordinates(self,num=10):
+        keywords10 = self.get_keywords(num=num)
+
+        end = datetime.now().strftime('%Y-%m-%d')
+        start   = (datetime.now() - delta(years=1) ).strftime('%Y-%m-%d')
+
+        kwds=keywords10.relkeyword.to_list()
+        kwd01 = []
+        
+        kwd01.append(kwds[:5])
+        kwd01.append(kwds[5:])
+
+        ## naver data lab
+        results = []
+        for i in range(2):
+            client_id = keydict['nav_client_id']
+            client_secret = keydict['nav_client_secret']
+            url = "https://openapi.naver.com/v1/datalab/search"
+            body = {
+                'startDate': start,
+                'endDate':  end,
+                'timeUnit': 'month',
+                'keywordGroups' :[]
+            #     'keywordGroups': [{'groupName': '한글', 'keywords': ['한글', 'korean']},
+            #                       {'groupName': '영어', 'keywords': ['영어', 'english']}],
+            #     'device': 'pc',
+            #     'ages': ['1', '2'],
+            #     'gender': 'f'
+            }
+            for kw in kwd01[i]:
+                group = { 'groupName': kw , 'keywords': [kw] }
+                body['keywordGroups'].append(group)
+
+            header = {}
+            header["X-Naver-Client-Id"] = client_id
+            header["X-Naver-Client-Secret"] = client_secret
+            header["Content-Type"]="application/json"
+            rq = requests.post(url ,json=body ,headers=header )
+
+            results.extend(rq.json()['results'] )
+
+
+        # 
+        return results 
 
 import sys
 if __name__ == '__main__' :
