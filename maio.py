@@ -121,6 +121,9 @@ def keywords_graph(kwd):
         plt.ylabel('Trend')
         fig.savefig('data/graph_%s%d.png'%(kwd,i))
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta as delta
+
 class keywordTrend :
 
     def __init__(self,kwd):
@@ -160,23 +163,22 @@ class keywordTrend :
         return self.tkwds[:num]
         
 
-    from datetime import datetime
-    from dateutil.relativedelta import relativedelta as delta
     def kwds_coordinates(self,num=10):
+        
         keywords10 = self.get_keywords(num=num)
 
         end = datetime.now().strftime('%Y-%m-%d')
         start   = (datetime.now() - delta(years=1) ).strftime('%Y-%m-%d')
-
+        
         kwds=keywords10.relkeyword.to_list()
         kwd01 = []
-        
-        kwd01.append(kwds[:5])
-        kwd01.append(kwds[5:])
+
+        for x in range(0 ,len(kwds) ,5 ):
+            kwd01.append(kwds[x:x+5] )
 
         ## naver data lab
         results = []
-        for i in range(2):
+        for i in range(len(kwd01)):
             client_id = keydict['nav_client_id']
             client_secret = keydict['nav_client_secret']
             url = "https://openapi.naver.com/v1/datalab/search"
