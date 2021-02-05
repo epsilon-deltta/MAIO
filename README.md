@@ -1,5 +1,5 @@
 [Youtube Video About simple usage ](https://youtu.be/_kPnSxVV7z0)
-
+![](./img/guide.gif)
 
 ## Make your marketing analysis be automatic
 
