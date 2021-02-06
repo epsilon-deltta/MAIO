@@ -16,18 +16,24 @@
 
 #### USAGE
 
-'''shell  
-        python maio.py keyword_You_Wanna_Search  
-'''  
+to get graph image files  
 
-'''python  
-from maio import keywordTrend as kt # show graphs in Ipython or Jupyter env  
-ktrend = kt('딥러닝')    
-ktrend.show()    
+```shell  
+python maio.py keyword_You_Wanna_Search  
+```  
 
-ktrend.tkwds # can get related keywords  
-ktred.kwds_coordinates() # coordinates of each keywords  
-'''
+maio package api
+
+```python  
+# show graphs in Ipython or Jupyter env  
+
+from maio import keywordTrend as kt 
+ktrend = kt('딥러닝')      
+ktrend.show()     
+ 
+ktrend.tkwds # can get related keywords   
+ktred.kwds_coordinates() # coordinates of each keywords   
+```   
 
 ![](./img/show-test.jpg)
 
