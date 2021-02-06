@@ -131,6 +131,7 @@ class keywordTrend :
     def __init__(self,kwd):
         self.kwd = kwd
         self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd )  )
+        self.kwds_coordis = None
         # self.keycoords
 
     ## naver ads keywords
@@ -208,9 +209,29 @@ class keywordTrend :
 
             results.extend(rq.json()['results'] )
 
-
-        # 
+        self.kwds_coordis = results 
         return results 
+
+    def show(self):
+        if self.kwds_coordis == None :
+            kwds = self.kwds_coordinates()
+        else :
+            kwds = self.kwds_coordis
+
+        for x in range(0,len(kwds),5):
+            results = kwds[x:x+5]
+
+            fig, axs = plt.subplots(1, 1, constrained_layout=True, sharey=True,figsize=(15,8))
+            for item in results:
+                df = pd.DataFrame(item['data'])
+                axs.plot(df.period,df.ratio,'--o',label=item['title'])
+            
+            axs.grid(True)  
+            plt.xticks(rotation=45)
+            plt.legend(loc='best')
+            plt.xlabel('month')
+            plt.ylabel('Trend')
+            plt.show()
 
 import sys
 if __name__ == '__main__' :
