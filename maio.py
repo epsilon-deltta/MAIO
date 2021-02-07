@@ -141,7 +141,7 @@ class keywordTrend :
             self.kwds_coordis = None
 
     ## naver ads keywords
-    def ads_kwds(self,kwd):
+    def ads_kwds(self,kwd,num=100):
         BASE_URL = 'https://api.naver.com'
 
         uri = '/keywordstool'
@@ -152,12 +152,22 @@ class keywordTrend :
                 }
 
         r = requests.get(BASE_URL + uri, params=payload, headers=get_header(method, uri, API_KEY, SECRET_KEY, CUSTOMER_ID))
-        keywords = r.json().get('keywordList')[:100]
+
+        temp = r.json().get('keywordList')
+        if temp is not None :
+            keywords = temp[:num]
+        else :
+            keywords = None
+        
         del r
         return keywords
 
     ## preprocessing of naver ads keywords
     def preprcs_kwds(self,keywords):
+
+        if keywords is None :
+            return None
+
         keywords = pd.DataFrame(keywords)
         keywords.columns = ['relkeyword','sch','mob_sch','click','mob_click','clk_r','mob_clk_r','num_ads','comp']
 
@@ -170,12 +180,15 @@ class keywordTrend :
         return keywords
 
     def get_keywords(self,num=10):
+        if self.tkwds is None:
+            return None
         return self.tkwds[:num]
         
 
     def kwds_coordinates(self,num=10):
         
         keywords10 = self.get_keywords(num=num)
+        
 
         end = datetime.now().strftime('%Y-%m-%d')
         start   = (datetime.now() - delta(years=1) ).strftime('%Y-%m-%d')
