@@ -134,6 +134,12 @@ class keywordTrend :
         self.kwds_coordis = None
         # self.keycoords
 
+    def set_keyword(self,kwd):
+        if kwd != self.kwd :
+            self.kwd = kwd
+            self.tkwds = self.preprcs_kwds(self.ads_kwds(self.kwd )  )
+            self.kwds_coordis = None
+
     ## naver ads keywords
     def ads_kwds(self,kwd):
         BASE_URL = 'https://api.naver.com'
@@ -146,7 +152,7 @@ class keywordTrend :
                 }
 
         r = requests.get(BASE_URL + uri, params=payload, headers=get_header(method, uri, API_KEY, SECRET_KEY, CUSTOMER_ID))
-        keywords = r.json()['keywordList'][:100]
+        keywords = r.json().get('keywordList')[:100]
         del r
         return keywords
 
