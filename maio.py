@@ -252,6 +252,30 @@ class keywordTrend :
             plt.ylabel('Trend')
             plt.show()
 
+    def get_df_coords(self):
+        
+        if self.kwds_coordis == None :
+            kwds = self.kwds_coordinates()
+        else :
+            kwds = self.kwds_coordis
+        
+        coords =pd.DataFrame(list(range(len(kwds[0]['data']) )  )   )
+        
+        for i,coor in enumerate(kwds):
+            
+            periods=[]
+            ratios=[]
+            for item in coor['data']:
+                periods.append(item['period'])
+                ratios.append(item['ratio'])
+            
+            if i == 0 :
+                coords.index = periods
+
+            coords.insert(i,coor['title'],pd.DataFrame(ratios,index=periods) )
+        del coords[[0]]
+        return coords
+
 import sys
 if __name__ == '__main__' :
 
