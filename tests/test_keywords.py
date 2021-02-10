@@ -11,12 +11,18 @@ class keywordsTest(unittest.TestCase):
         results = self.trend.get_keywords(15)
         self.assertEqual(15,len(results))
 
-    def test_set_keyword(self):
-        nokey = '영화 아이언맨'
-        self.trend.set_keyword(nokey)
+    def test_keywords_error_cases(self):
+        errs = ['온라인 판매']
+        for x in errs:
+            self.trend.set_keyword(x)
+            self.assertIsNotNone(self.trend.tkwds)
 
-        self.assertEqual(None,self.trend.tkwds )
-        self.assertEqual(None,self.trend.kwds_coordis)
+    # def test_set_keyword(self):
+    #     nokey = '영화 아이언맨'
+    #     self.trend.set_keyword(nokey)
+
+    #     self.assertEqual(None,self.trend.tkwds )
+    #     self.assertEqual(None,self.trend.kwds_coordis)
         
 if __name__ == '__main__':
     unittest.main()

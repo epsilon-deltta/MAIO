@@ -125,13 +125,17 @@ def keywords_graph(kwd):
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta as delta
+import re
 
+# error : '온라인 판매'
 class keywordTrend :
 
     def __init__(self,kwd):
         self.kwd = kwd
         self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd )  )
         self.kwds_coordis = None
+        self.dfcoordis = None
+
         # self.keycoords
 
     def set_keyword(self,kwd):
@@ -139,9 +143,12 @@ class keywordTrend :
             self.kwd = kwd
             self.tkwds = self.preprcs_kwds(self.ads_kwds(self.kwd )  )
             self.kwds_coordis = None
+            self.dfcoordis = None
 
     ## naver ads keywords
     def ads_kwds(self,kwd,num=100):
+        kwd = self.handle_kwd(kwd)
+        
         BASE_URL = 'https://api.naver.com'
 
         uri = '/keywordstool'
@@ -161,12 +168,20 @@ class keywordTrend :
         
         del r
         return keywords
+    # filtering keyword that doesn't work or gets nothing
+    
+    def handle_kwd(self,kwd):
+        # if you have spaces?, i'm gonna kill all of them...hahaah
+        kwd = re.sub('\s','',kwd)
+
+        return kwd
 
     ## preprocessing of naver ads keywords
     def preprcs_kwds(self,keywords):
 
         if keywords is None :
             return None
+        
 
         keywords = pd.DataFrame(keywords)
         keywords.columns = ['relkeyword','sch','mob_sch','click','mob_click','clk_r','mob_clk_r','num_ads','comp']
@@ -184,6 +199,13 @@ class keywordTrend :
             return None
         return self.tkwds[:num]
         
+    def get_df_coordis(self,start=None,end=None):
+        if self.dfcoordis is None :
+            self.kwds_to_df()
+        
+        df = self.dfcoordis
+        return df[df.columns[start:end] ]
+
 
     def kwds_coordinates(self,num=10):
         
@@ -252,7 +274,7 @@ class keywordTrend :
             plt.ylabel('Trend')
             plt.show()
 
-    def get_df_coords(self):
+    def kwds_to_df(self):
         
         if self.kwds_coordis == None :
             kwds = self.kwds_coordinates()
@@ -273,7 +295,10 @@ class keywordTrend :
                 coords.index = periods
 
             coords.insert(i,coor['title'],pd.DataFrame(ratios,index=periods) )
-        del coords[[0]]
+        
+        coords.drop(coords.columns[-1],axis=1,inplace=True)
+
+        self.dfcoordis = coords
         return coords
 
 import sys
