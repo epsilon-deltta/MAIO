@@ -130,18 +130,18 @@ import re
 # error : '온라인 판매'
 class keywordTrend :
 
-    def __init__(self,kwd):
+    def __init__(self,kwd,num=100):
         self.kwd = kwd
-        self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd )  )
+        self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd,num=num )  )
         self.kwds_coordis = None
         self.dfcoordis = None
 
         # self.keycoords
 
-    def set_keyword(self,kwd):
+    def set_keyword(self,kwd,num=100):
         if kwd != self.kwd :
             self.kwd = kwd
-            self.tkwds = self.preprcs_kwds(self.ads_kwds(self.kwd )  )
+            self.tkwds = self.preprcs_kwds(self.ads_kwds(self.kwd,num=num )  )
             self.kwds_coordis = None
             self.dfcoordis = None
 
