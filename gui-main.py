@@ -68,10 +68,11 @@ if sch_btn:
 
     # op0 : recommendation 3
     if op0 == True :
-        if len(kwds10) > 3 :
-            rds = rd.sample(kwd10,3)
-            rds = kwds10[rds]
-            rcmd3 = pd.merge(kwds10,rds)
+        if len(kwd10) > 3 :
+            rds = rd.sample(list(range(len(kwd10) )  ),3    )
+            rcmd3 = kwd10.iloc[rds]
+
+            st.write('Random recommendation')
             st.write(rcmd3)
     
 

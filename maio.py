@@ -127,12 +127,12 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta as delta
 import re
 
-# error : '온라인 판매'
 class keywordTrend :
 
     def __init__(self,kwd,num=100):
         self.kwd = kwd
         self.tkwds = self.preprcs_kwds(self.ads_kwds(kwd,num=num )  )
+
         self.kwds_coordis = None
         self.dfcoordis = None
 
@@ -300,6 +300,12 @@ class keywordTrend :
 
         self.dfcoordis = coords
         return coords
+
+    def get_reduction(self,how = 'pca'):
+        # sel_ft = ['']
+        # return rcmd.get_extr(self.tkwds[[]])
+        pass
+        
 
 import sys
 if __name__ == '__main__' :

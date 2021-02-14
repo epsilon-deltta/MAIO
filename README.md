@@ -55,3 +55,5 @@ CUSTOMER_ID=1316
 
 - when fetching data, change amount of data 1000 > 100 (time-consuming)
     - I asked this problem to Naver api group , they said there's not option to change amount of data
+
+- About shopping review data
