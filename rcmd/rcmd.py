@@ -18,3 +18,5 @@ class rcmd:
 
     def test(self):
         print('this is for testing of packaging')
+
+    

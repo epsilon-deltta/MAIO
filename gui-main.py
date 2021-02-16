@@ -36,7 +36,7 @@ with sch_op0 :
     )
 with sch_op1 :
     op1 = st.checkbox(
-        'Beta 0 ',
+        'remove Outliers',
         value = False,
     )
 with sch_op2 :
